@@ -20,3 +20,5 @@
 index.html
 Readme.md
 ```
+
+Наставник: <a href="https://htmlacademy.ru/profile/id1181399" rel="nofollow">Сергей Попов</a>.
