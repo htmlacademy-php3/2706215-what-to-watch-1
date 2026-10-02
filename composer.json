@@ -1,0 +1,19 @@
+{
+    "name": "sanweb/what-to-watch",
+    "description": "PHP/Laravel learning project",
+    "require": {
+        "php": "^8.0",
+        "guzzlehttp/guzzle": "^7.15",
+        "vlucas/phpdotenv": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "sanweb"
+        }
+    ]
+}
