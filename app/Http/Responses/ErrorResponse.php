@@ -2,37 +2,36 @@
 
 namespace App\Http\Responses;
 
-use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 class ErrorResponse extends BaseResponse
 {
-    private const DEFAULT_STATUS = 500;
+    private const DEFAULT_CODE = 500;
 
     /**
-     * @param int|null $status HTTP status override; null uses the exception status or 500.
+     * @param string|null $message Null uses the exception message.
+     * @param int|null $code Null uses the HTTP exception status or 500.
      */
     public function __construct(
         Throwable $exception,
-        ?int $status = null,
+        bool $status = false,
+        ?string $message = null,
+        ?int $code = null,
     ) {
-        $payload = [
-            'message' => $exception->getMessage(),
-        ];
+        $code ??= $exception instanceof HttpExceptionInterface
+            ? $exception->getStatusCode()
+            : self::DEFAULT_CODE;
 
-        if ($exception instanceof ValidationException) {
-            $payload['errors'] = $exception->errors();
-        }
+        parent::__construct(
+            $status,
+            $message ?? $exception->getMessage(),
+            $code
+        );
+    }
 
-        if ($status === null) {
-            $status = match (true) {
-                $exception instanceof HttpExceptionInterface => $exception->getStatusCode(),
-                $exception instanceof ValidationException => $exception->status,
-                default => self::DEFAULT_STATUS,
-            };
-        }
-
-        parent::__construct($payload, $status);
+    protected function payload(): array
+    {
+        return [];
     }
 }

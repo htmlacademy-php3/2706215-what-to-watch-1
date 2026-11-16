@@ -4,8 +4,19 @@ namespace App\Http\Responses;
 
 class SuccessResponse extends BaseResponse
 {
-    public function __construct(array $data, int $status = 200)
+    public function __construct(
+        protected array $data,
+        bool $status = true,
+        ?string $message = 'Успешная загрузка',
+        int $code = 200,
+    ) {
+        parent::__construct($status, $message, $code);
+    }
+
+    protected function payload(): array
     {
-        parent::__construct(['data' => $data], $status);
+        return $this->compact([
+            'data' => $this->data,
+        ]);
     }
 }

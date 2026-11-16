@@ -6,21 +6,46 @@ use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class BaseResponse implements Responsable
+abstract class BaseResponse implements Responsable
 {
     /**
-     * @param array<string, mixed> $payload
+     * Initialize common response fields and HTTP status code.
      */
     public function __construct(
-        private array $payload,
-        private int $status
+        protected bool $status = true,
+        protected ?string $message = null,
+        protected int $code = 200,
     ) {}
 
     /**
+     * Return response-specific fields.
+     *
+     * @return array<string, mixed>
+     */
+    abstract protected function payload(): array;
+
+    /**
+     * Build the JSON HTTP response.
+     *
      * @param \Illuminate\Http\Request $request
      */
     public function toResponse($request): Response
     {
-        return new JsonResponse($this->payload, $this->status);
+        return new JsonResponse([
+            ...$this->payload(),
+            'message' => $this->message,
+            'status' => $this->status,
+        ], $this->code);
+    }
+
+    /**
+     * Remove null values while preserving keys.
+     *
+     * @param array<string, mixed> $fields
+     * @return array<string, mixed>
+     */
+    public function compact(array $fields): array
+    {
+        return array_filter($fields, static fn($item) => $item !== null);
     }
 }
