@@ -2,48 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Responses\SuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class CommentController extends Controller
 {
     /**
      * List film comments.
      */
-    public function index(string $id): Response
+    public function index(string $id): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 
     /**
      * Add a film comment.
      */
-    public function store(Request $request, string $id): Response
+    public function store(Request $request, string $id): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 
     /**
      * Show a comment.
      */
-    public function show(string $id): Response
+    public function show(string $id): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 
     /**
      * Update a comment.
      */
-    public function update(Request $request, string $comment): Response
+    public function update(Request $request, string $comment): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 
     /**
      * Delete a comment.
      */
-    public function destroy(string $comment): Response
+    public function destroy(string $comment): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 }

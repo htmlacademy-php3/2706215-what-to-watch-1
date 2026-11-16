@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Responses\SuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
     /**
      * Show the current user's profile.
      */
-    public function show(): Response
+    public function show(): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 
     /**
      * Update the current user's profile.
      */
-    public function update(Request $request): Response
+    public function update(Request $request): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 }

@@ -2,32 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Responses\SuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class FavoriteController extends Controller
 {
     /**
      * List favorite films.
      */
-    public function index(): Response
+    public function index(): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 
     /**
      * Add a film to favorites.
      */
-    public function store(Request $request, string $id): Response
+    public function store(Request $request, string $id): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 
     /**
      * Remove a film from favorites.
      */
-    public function destroy(string $id): Response
+    public function destroy(string $id): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 }

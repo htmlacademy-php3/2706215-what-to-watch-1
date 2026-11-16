@@ -2,32 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Responses\SuccessResponse;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
     /**
      * User registration.
      */
-    public function register(Request $request): Response
+    public function register(Request $request): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 
     /**
      * User login.
      */
-    public function login(Request $request): Response
+    public function login(Request $request): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 
     /**
      * User logout.
      */
-    public function logout(): Response
+    public function logout(): Responsable
     {
-        return response()->noContent();
+        return new SuccessResponse([]);
     }
 }
