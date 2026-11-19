@@ -15,14 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('film_id')->constrained()->cascadeOnDelete();
             $table->foreignId('genre_id')->constrained()->cascadeOnDelete();
-            /*
-            // expanded form
-            $table->unsignedBigInteger('film_id');
-            $table->unsignedBigInteger('genre_id');
-
-            $table->foreign('film_id')->references('id')->on('films')->cascadeOnDelete();
-            $table->foreign('genre_id')->references('id')->on('genres')->cascadeOnDelete();
-            */
             $table->unique(['film_id', 'genre_id']);
         });
     }

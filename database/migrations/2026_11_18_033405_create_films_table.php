@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('background_color', 9)->nullable()->default('#ffffff');
             $table->string('video_link')->nullable();
             $table->string('preview_video_link')->nullable();
-            $table->string('description', 1000)->nullable(); // or text?
+            $table->text('description')->nullable();
             $table->string('director')->nullable();
             $table->json('starring')->nullable();
             $table->integer('run_time')->nullable();

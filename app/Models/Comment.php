@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,18 +24,11 @@ use Illuminate\Support\Carbon;
  * @property-read Comment|null $parent
  * @property-read Comment[]|Collection $replies
  */
+#[Fillable(['film_id', 'user_id', 'text', 'rating', 'comment_id'])]
 class Comment extends Model
 {
     /** @use HasFactory<\Database\Factories\CommentFactory> */
     use HasFactory;
-
-    protected $fillable = [
-        'film_id',
-        'user_id', // associate ?
-        'text',
-        'rating',
-        'comment_id',
-    ];
 
     /**
      * @return BelongsTo<Film, $this>

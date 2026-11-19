@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enum\FilmStatus;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,34 +31,39 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read Genre[]|Collection $genres
  */
+#[Fillable([
+    'name',
+    'imdb_id',
+    'poster_image',
+    'preview_image',
+    'background_image',
+    'background_color',
+    'video_link',
+    'preview_video_link',
+    'description',
+    'director',
+    'starring',
+    'run_time',
+    'released',
+    'status',
+    'is_promo',
+])]
 class Film extends Model
 {
     /** @use HasFactory<\Database\Factories\FilmFactory> */
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'imdb_id',
-        'poster_image',
-        'preview_image',
-        'background_image',
-        'background_color',
-        'video_link',
-        'preview_video_link',
-        'description',
-        'director',
-        'starring',
-        'run_time',
-        'released',
-        'status',
-        'is_promo',
-    ];
-
-    protected $casts = [
-        'starring' => 'array',
-        'status' => FilmStatus::class,
-        'is_promo' => 'boolean',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'starring' => 'array',
+            'status' => FilmStatus::class,
+            'is_promo' => 'boolean',
+        ];
+    }
 
     /**
      * @return BelongsToMany<Genre, $this>
