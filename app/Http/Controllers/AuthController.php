@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Responses\AuthResponse;
 use App\Http\Responses\SuccessResponse;
-use App\Http\Responses\ValidationResponse;
-use App\Models\User;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -26,28 +24,34 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request): Responsable
     {
-        $data = $request->validated();
-        $user = User::query()->where('email', '=', $data['email'])->first();
+        if (!Auth::attempt($request->validated())) {
+            return new AuthResponse(message: 'Неверный email или пароль.');
+        }
 
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            return new ValidationResponse(
-                ['password' => ['Неверный email или пароль.']]
-            );
+        $user = Auth::user();
+
+        if ($request->hasSession()) {
+            $request->session()->regenerate();
         }
 
         $token = $user->createToken('auth-token');
 
-        return new SuccessResponse([
-            'token' => $token->plainTextToken,
-        ]);
+        return new SuccessResponse(['token' => $token->plainTextToken]);
     }
 
     /**
      * User logout.
      */
-    public function logout(): Responsable
+    public function logout(Request $request): Responsable
     {
         Auth::user()->tokens()->delete();
+
+        if ($request->hasSession()) {
+            Auth::guard('web')->logout();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
         return new SuccessResponse([]);
     }
