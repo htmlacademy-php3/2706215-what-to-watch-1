@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Responses\SuccessResponse;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class AuthController extends Controller
     /**
      * User login.
      */
-    public function login(Request $request): Responsable
+    public function login(LoginRequest $request): Responsable
     {
         return new SuccessResponse([]);
     }
