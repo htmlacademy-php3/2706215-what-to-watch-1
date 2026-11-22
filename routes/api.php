@@ -13,7 +13,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('auth.regist
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('auth.logout');
 
-Route::prefix('/user')->name('user.')->group(function () {
+Route::prefix('/user')->middleware('auth:sanctum')->name('user.')->group(function () {
     Route::get('/', [UserController::class, 'show'])->name('show');
     Route::patch('/', [UserController::class, 'update'])->name('update');
 });
