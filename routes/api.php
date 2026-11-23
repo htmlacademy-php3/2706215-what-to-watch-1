@@ -30,10 +30,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/', [UserController::class, 'update'])->name('update');
     });
 
-    Route::post('/films', [FilmController::class, 'store'])->name('films.store');
-    Route::patch('/films/{id}', [FilmController::class, 'update'])->name('films.update');
+    Route::middleware('moderator')->group(function () {
+        Route::post('/films', [FilmController::class, 'store'])->name('films.store');
+        Route::patch('/films/{id}', [FilmController::class, 'update'])->name('films.update');
 
-    Route::patch('/genres/{genre}', [GenreController::class, 'update'])->name('genres.update');
+        Route::patch('/genres/{genre}', [GenreController::class, 'update'])->name('genres.update');
+
+        Route::post('/promo/{id}', [PromoController::class, 'store'])->name('promo.store');
+    });
 
     Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/films/{id}/favorite', [FavoriteController::class, 'store'])->name('favorites.store');
@@ -42,6 +46,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/comments/{id}', [CommentController::class, 'store'])->name('comments.store');
     Route::patch('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
-
-    Route::post('/promo/{id}', [PromoController::class, 'store'])->name('promo.store');
 });

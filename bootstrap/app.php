@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserIsModerator;
 use App\Http\Responses\AuthResponse;
 use App\Http\Responses\ErrorResponse;
 use App\Http\Responses\ValidationResponse;
@@ -20,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
+        $middleware->alias([
+            'moderator' => EnsureUserIsModerator::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
