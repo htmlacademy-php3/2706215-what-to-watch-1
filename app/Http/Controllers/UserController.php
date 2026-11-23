@@ -11,9 +11,16 @@ class UserController extends Controller
     /**
      * Show the current user's profile.
      */
-    public function show(): Responsable
+    public function show(Request $request): Responsable
     {
-        return new SuccessResponse([]);
+        $user = $request->user();
+
+        return new SuccessResponse([
+            'name' => $user->name,
+            'email' => $user->email,
+            'avatar' => $user->avatar,
+            'role' => $user->role,
+        ]);
     }
 
     /**
