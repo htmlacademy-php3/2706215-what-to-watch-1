@@ -44,6 +44,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/films/{id}/favorite', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
 
     Route::post('/comments/{id}', [CommentController::class, 'store'])->name('comments.store');
-    Route::patch('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
-    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::patch('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update')
+        //->middleware('can:update,comment')
+        ->can('update', 'comment');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy')
+        //->middleware('can:delete,comment')
+        ->can('delete', 'comment');
 });
