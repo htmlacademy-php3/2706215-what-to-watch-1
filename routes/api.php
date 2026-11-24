@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/', [UserController::class, 'update'])->name('update');
     });
 
-    Route::middleware('moderator')->group(function () {
+    Route::middleware('can:moderate')->group(function () {
         Route::post('/films', [FilmController::class, 'store'])->name('films.store');
         Route::patch('/films/{id}', [FilmController::class, 'update'])->name('films.update');
 

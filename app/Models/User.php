@@ -83,4 +83,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+
+    /**
+     * Determine whether the user has the moderator role.
+     */
+    public function isModerator(): bool
+    {
+        return $this->role?->name === UserRole::MODERATOR->value;
+    }
 }
