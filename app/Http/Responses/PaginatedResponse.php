@@ -24,6 +24,7 @@ class PaginatedResponse extends BaseResponse
             'data' => $this->paginator->items(),
             'current_page' => $this->paginator->currentPage(),
             'first_page_url' => $this->paginator->url(1),
+            'last_page_url' => $this->paginator->url($this->paginator->lastPage()),
             'next_page_url' => $this->paginator->nextPageUrl(),
             'prev_page_url' => $this->paginator->previousPageUrl(),
             'per_page' => $this->paginator->perPage(),
