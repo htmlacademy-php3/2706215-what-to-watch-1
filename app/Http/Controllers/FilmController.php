@@ -7,7 +7,6 @@ use App\Http\Requests\IndexFilmRequest;
 use App\Http\Responses\SuccessResponse;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class FilmController extends Controller
 {
@@ -17,15 +16,6 @@ class FilmController extends Controller
     public function index(IndexFilmRequest $request): Responsable
     {
         $status = $request->validated('status', FilmStatus::READY->value);
-
-        if ($status !== FilmStatus::READY->value) {
-            $user = $request->user('sanctum');
-
-            abort_unless($user, 401);
-
-            // abort_unless($user->can('moderate'), 403);
-            Gate::forUser($user)->authorize('moderate');
-        }
 
         return new SuccessResponse([]);
     }

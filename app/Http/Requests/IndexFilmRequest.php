@@ -14,7 +14,14 @@ class IndexFilmRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if (!in_array($this->query('status'), [
+            FilmStatus::PENDING->value,
+            FilmStatus::MODERATE->value,
+        ], true)) {
+            return true;
+        }
+
+        return $this->user('sanctum')?->can('moderate') ?? false;
     }
 
     /**
