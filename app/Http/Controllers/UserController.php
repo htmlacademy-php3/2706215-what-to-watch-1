@@ -19,7 +19,7 @@ class UserController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'avatar' => $user->avatar,
-            'role' => $user->role,
+            'role' => $user->role?->name,
         ]);
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\FilmStatus;
+use App\Http\Requests\IndexFilmRequest;
 use App\Http\Responses\SuccessResponse;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
@@ -11,8 +13,10 @@ class FilmController extends Controller
     /**
      * List films.
      */
-    public function index(): Responsable
+    public function index(IndexFilmRequest $request): Responsable
     {
+        $status = $request->validated('status', FilmStatus::READY->value);
+
         return new SuccessResponse([]);
     }
 
