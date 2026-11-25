@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enum\FilmStatus;
 use Database\Factories\FilmFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,6 +34,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read Genre[]|Collection $genres
  * @property-read Comment[]|Collection $comments
+ * @property-read float $rating
  */
 #[Fillable(['name', 'imdb_id', 'poster_image', 'preview_image', 'background_image', 'background_color', 'video_link', 'preview_video_link', 'description', 'director', 'starring', 'run_time', 'released', 'status', 'is_promo'])]
 class Film extends Model
@@ -66,5 +68,19 @@ class Film extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get the film's average comment rating.
+     *
+     * Return 0.0 when no comments have a rating.
+     *
+     * @return Attribute<float, never>
+     */
+    protected function rating(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): float => $this->comments->avg('rating') ?? 0.0
+        );
     }
 }
