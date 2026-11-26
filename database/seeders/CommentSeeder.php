@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Comment;
+use App\Models\Film;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class CommentSeeder extends Seeder
@@ -12,6 +14,13 @@ class CommentSeeder extends Seeder
      */
     public function run(): void
     {
-        Comment::factory()->count(100)->create();
+        $films = Film::all();
+        $users = User::all();
+
+        Comment::factory()
+            ->count(100)
+            ->recycle($films)
+            ->recycle($users)
+            ->create();
     }
 }
