@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        $this->call(RoleSeeder::class);
         $clientRole = Role::query()
             ->where('name', UserRole::CLIENT->value)
             ->firstOrFail();
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
+            GenreSeeder::class,
             FilmSeeder::class,
             CommentSeeder::class,
         ]);
