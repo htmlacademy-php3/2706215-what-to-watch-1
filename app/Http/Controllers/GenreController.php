@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateGenreRequest;
+use App\Http\Resources\GenreCollection;
+use App\Http\Resources\GenreResource;
 use App\Http\Responses\SuccessResponse;
+use App\Models\Genre;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
@@ -13,14 +16,18 @@ class GenreController extends Controller
      */
     public function index(): Responsable
     {
-        return new SuccessResponse([]);
+        $genres = Genre::all();
+
+        return new SuccessResponse(new GenreCollection($genres)->resolve());
     }
 
     /**
      * Update a genre.
      */
-    public function update(Request $request, string $genre): Responsable
+    public function update(UpdateGenreRequest $request, Genre $genre): Responsable
     {
-        return new SuccessResponse([]);
+        $genre->update($request->validated());
+
+        return new SuccessResponse(new GenreResource($genre)->resolve());
     }
 }
