@@ -39,8 +39,6 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment): Responsable
     {
-        // Gate::authorize('update', $comment);
-
         return new SuccessResponse([]);
     }
 
@@ -49,8 +47,6 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment): Responsable
     {
-        // Gate::authorize('delete', $comment);
-
         return new SuccessResponse([]);
     }
 }

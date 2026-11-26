@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Database\Factories\CommentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +21,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $comment_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read string $author_name
  * @property-read Film $film
  * @property-read User|null $user
  * @property-read Comment|null $parent
@@ -27,7 +30,7 @@ use Illuminate\Support\Carbon;
 #[Fillable(['film_id', 'user_id', 'text', 'rating', 'comment_id'])]
 class Comment extends Model
 {
-    /** @use HasFactory<\Database\Factories\CommentFactory> */
+    /** @use HasFactory<CommentFactory> */
     use HasFactory;
 
     /**
@@ -60,5 +63,17 @@ class Comment extends Model
     public function replies(): HasMany
     {
         return $this->hasMany(self::class, 'comment_id');
+    }
+
+    /**
+     * Get the author's name when reading the author_name property.
+     *
+     * @return Attribute<string, never>
+     */
+    protected function authorName(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => $this->user?->name ?? 'Гость'
+        );
     }
 }

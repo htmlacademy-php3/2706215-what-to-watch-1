@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->enum('name', UserRole::cases())->default(UserRole::CLIENT->value)->unique();
-            $table->timestamps(); // ?
+            $table->timestamps();
         });
 
         DB::table('roles')->insert([
