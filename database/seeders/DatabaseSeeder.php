@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enum\UserRole;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,9 +19,21 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        $this->call(RoleSeeder::class);
+        $clientRole = Role::query()
+            ->where('name', UserRole::CLIENT->value)
+            ->firstOrFail();
+
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'role_id' => $clientRole->id,
+        ]);
+
+        $this->call([
+            GenreSeeder::class,
+            FilmSeeder::class,
+            CommentSeeder::class,
         ]);
     }
 }

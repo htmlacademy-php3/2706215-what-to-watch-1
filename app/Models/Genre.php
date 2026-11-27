@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Database\Factories\GenreFactory;
+// use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,9 +19,11 @@ use Illuminate\Support\Carbon;
  * @property-read Film[]|Collection $films
  */
 #[Fillable(['name'])]
+// API fields are defined by resources instead of hidden.
+// #[Hidden(['created_at', 'updated_at'])]
 class Genre extends Model
 {
-    /** @use HasFactory<\Database\Factories\GenreFactory> */
+    /** @use HasFactory<GenreFactory> */
     use HasFactory;
 
     /**

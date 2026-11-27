@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Film;
+use App\Models\Genre;
 use Illuminate\Database\Seeder;
 
 class FilmSeeder extends Seeder
@@ -12,6 +13,11 @@ class FilmSeeder extends Seeder
      */
     public function run(): void
     {
-        Film::factory()->count(10)->create();
+        $genres = Genre::all();
+        $films = Film::factory()->count(10)->create();
+
+        foreach ($films as $film) {
+            $film->genres()->attach($genres->random(2));
+        }
     }
 }
