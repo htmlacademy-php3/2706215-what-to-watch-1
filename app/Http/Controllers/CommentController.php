@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCommentRequest;
+use App\Http\Requests\UpdateCommentRequest;
+use App\Http\Resources\CommentCollection;
+use App\Http\Resources\CommentResource;
 use App\Http\Responses\SuccessResponse;
 use App\Models\Comment;
+use App\Models\Film;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -15,15 +18,26 @@ class CommentController extends Controller
      */
     public function index(string $id): Responsable
     {
-        return new SuccessResponse([]);
+        $film = Film::findOrFail($id);
+        $comments = $film->comments()->with('user')->latest()->get();
+
+        return new SuccessResponse(new CommentCollection($comments)->resolve());
     }
 
     /**
      * Add a film comment.
      */
-    public function store(Request $request, string $id): Responsable
+    public function store(StoreCommentRequest $request, string $id): Responsable
     {
-        return new SuccessResponse([]);
+        $film = Film::findOrFail($id);
+        $comment = $film->comments()->create([
+            ...$request->validated(),
+            'user_id' => $request->user()->id,
+        ]);
+
+        $comment->load('user');
+
+        return new SuccessResponse(new CommentResource($comment)->resolve(), code: 201);
     }
 
     /**
@@ -37,9 +51,12 @@ class CommentController extends Controller
     /**
      * Update a comment.
      */
-    public function update(Request $request, Comment $comment): Responsable
+    public function update(UpdateCommentRequest $request, Comment $comment): Responsable
     {
-        return new SuccessResponse([]);
+        $comment->update($request->validated());
+        $comment->load('user');
+
+        return new SuccessResponse(new CommentResource($comment)->resolve());
     }
 
     /**
@@ -47,6 +64,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment): Responsable
     {
+        $comment->delete();
+
         return new SuccessResponse([]);
     }
 }
