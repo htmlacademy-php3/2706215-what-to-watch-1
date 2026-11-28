@@ -5,10 +5,12 @@ use App\Models\Genre;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 uses(RefreshDatabase::class);
 
 test('guest can view the genre list', function () {
+    /** @var TestCase $this */
     $genres = Genre::factory()->count(3)->create();
 
     $response = $this->getJson(route('genres.index'));
@@ -30,6 +32,7 @@ test('guest can view the genre list', function () {
 });
 
 test('guest receives an empty genre list when no genres exist', function () {
+    /** @var TestCase $this */
     $response = $this->getJson(route('genres.index'));
 
     $response->assertOk();
@@ -37,6 +40,7 @@ test('guest receives an empty genre list when no genres exist', function () {
 });
 
 test('authenticated user can view the genre list', function () {
+    /** @var TestCase $this */
     $user = User::factory()->create();
     Genre::factory()->count(3)->create();
     $this->actingAs($user);
@@ -48,6 +52,7 @@ test('authenticated user can view the genre list', function () {
 });
 
 test('guest cannot update a genre', function () {
+    /** @var TestCase $this */
     $genre = Genre::factory()->create();
 
     $response = $this->patchJson(
@@ -59,6 +64,7 @@ test('guest cannot update a genre', function () {
 });
 
 test('client cannot update a genre', function () {
+    /** @var TestCase $this */
     $user = User::factory()->create();
     $genre = Genre::factory()->create();
     $this->actingAs($user);
@@ -72,6 +78,7 @@ test('client cannot update a genre', function () {
 });
 
 test('moderator can update a genre', function () {
+    /** @var TestCase $this */
     $moderatorRole = Role::query()
         ->where('name', UserRole::MODERATOR->value)
         ->firstOrFail();
@@ -97,5 +104,4 @@ test('moderator can update a genre', function () {
 
     $response->assertJsonPath('data.id', $genre->id);
     $response->assertJsonPath('data.name', 'Drama');
-
 });

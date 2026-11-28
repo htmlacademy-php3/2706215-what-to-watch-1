@@ -32,7 +32,10 @@ class IndexFilmRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'genre' => ['sometimes', 'integer'],
             'status' => ['sometimes', 'required', Rule::enum(FilmStatus::class)],
+            'order_by' => ['sometimes', Rule::in(['released', 'rating'])],
+            'order_to' => ['sometimes', Rule::in(['asc', 'desc'])],
         ];
     }
 }
